@@ -3,7 +3,11 @@
 #include <string>
 #include <vector>
 
+constexpr int NUM_PERIODS = 8;
+
 using namespace std;
+
+// TODO: Add helper functions to each data types to manage allocation/deallocation
 
 struct Course {
     int period;
@@ -21,4 +25,8 @@ struct Student {
 
 struct Period {
     vector<Course> courses; // list of courses in period
+};
+
+struct Schedule {
+    Period schedule[NUM_PERIODS];
 };
