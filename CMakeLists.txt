@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.28)
+
+project(SynergyScheduler)
+
+add_executable(SynergyScheduler
+        src/main.cpp
+        src/json/json.h src/json/json-forwards.h src/jsoncpp.cpp
+        src/schedule.cpp src/schedule.h
+        src/cost.cpp src/cost.h
+        src/mutation.cpp src/mutation.h
+        src/genetic.cpp src/genetic.h)
+
+add_executable(SyntheticData src/jsongen.cpp)
