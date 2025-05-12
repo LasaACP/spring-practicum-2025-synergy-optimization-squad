@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -28,7 +29,7 @@ int main() {
 
     // Electives
     file << "\n    \"electives\": [";
-    std::cout << "how many Electives? (default 6) ";
+    cout << "how many Electives? (default 6) ";
     int electives = get_number(6);
 
     for (int i = 0; i < electives-1; i++) {
@@ -39,10 +40,10 @@ int main() {
 
     // Students
     file << "\n    \"students\": [";
-    std::cout << "how many Students? (default 20) ";
+    cout << "how many Students? (default 20) ";
     int students = get_number(20);
 
-    std::cout << "how many desired electives per student? (default 4, be less than # of electives) ";
+    cout << "how many desired electives per student? (default 4, be less than # of electives) ";
     int electives_per_student = get_number(4);
 
     for (int i = 0; i < students; i++) {
