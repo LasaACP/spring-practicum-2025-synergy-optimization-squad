@@ -1,25 +1,24 @@
-#include <iostream>
+#pragma once
+
 #include <string>
 #include <vector>
 
 using namespace std;
 
-struct Student{
-    string studentID; //"name" of student
-    vector<string> wishList; // 0 - highest priority 
-    int grade;
-    struct Course schedule[8];
-};
-
-struct Course{
+struct Course {
     int period;
     string name; //name of course
-    vector<int> student; //list of students in the class (represented by ID number)
-    bool ifCore; //True if core class
+    vector<int> students; //list of students in the class (represented by ID number)
+    bool is_core; //True if core class
 };
 
-struct Period{
-    vector<Course> listOfCourses; // list of courses in period
+struct Student {
+    string student_id; //"name" of student
+    vector<string> wish_list; // 0 - highest priority
+    int grade;
+    Course schedule[8];
 };
 
-struct Period periods[8];
+struct Period {
+    vector<Course> courses; // list of courses in period
+};
