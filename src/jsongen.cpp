@@ -13,24 +13,26 @@ int main() {
     if (!cores) {
         cores = 4;
     }
-    for (int i = 0; i < cores; i++) {
+    for (int i = 0; i < cores-1; i++) {
         file << "\"Core" << i + 1 << "\", ";
     }
+    file << "\"Core" << cores << "\"";
     file << "]," << endl;
     // deciding electives
-    file << "{" << endl << "    \"electives\": [";
+    file << "\n    \"electives\": [";
     std::cout << "how many Electives? (default 6)" << endl;
     int electives;
     std::cin >> electives;
     if (!electives) {
         electives = 6;
     }
-    for (int i = 0; i < electives; i++) {
-        file << "\"Core" << i + 1 << "\", ";
+    for (int i = 0; i < electives-1; i++) {
+        file << "\"Elective" << i + 1 << "\", ";
     }
+    file << "\"Elective" << electives << "\"";
     file << "]," << endl;
     // deciding students
-    file << "{" << endl << "    \"students\": [";
+    file << "\n    \"students\": [";
     int students;
     std::cout << endl << "how many Students? (default 20)" << endl;
     std::cin >> students;
@@ -44,26 +46,29 @@ int main() {
         electives_per_student = 4;
     }
     for (int i = 0; i < students; i++) {
-        if (i == 0) file << "       {\"id\":   " << i + 1 << ", \"courses\": [";
-        else file << "," << endl << "       {\"id\":   " << i + 1 << ", \"courses\": [";
-        int* electiveList; // array to electives
+        if (i == 0) file << "\n        {\"id\":   " << i + 1 << ", \"courses\": [";
+        else        file << ",\n        {\"id\":   " << i + 1 << ", \"courses\": [";
+        int* electiveList =(int*)malloc(sizeof(int) * electives_per_student); // array to electives
         for (int j = 0; j < electives_per_student; j++) {
             // creates elective values for each student
             int randNum = rand() % electives + 1; // generates a random number within random elective bounds
-            for (int k = 0; k < j - 1; k++) {
+            bool alreadyThere = false;
+            for (int k = 0; k < j; k++) {
                 // iterates through all already-generated indicies
                 if (randNum == *(electiveList + k)) {
                     // checks the indicies to make sure the same elective isn't generated twice
                     j--;
-                    continue; // if it is generated twice, repeat the generation
+                    alreadyThere = true; // if it is generated twice, repeat the generation
                 }
             }
-            file << "\"Elective" << randNum << "\"";
+            if (alreadyThere) continue;
+            if (j == electives_per_student-1) file << "\"Elective" << randNum << "\"";
+            else file << "\"Elective" << randNum << "\", ";
             *(electiveList + j) = randNum;
         }
         delete electiveList;
         file << "]}";
     }
 
-    file << "   ]" << endl << "}";
+    file << "\n   ]\n}";
 }
