@@ -33,6 +33,7 @@
 
 # Cmake
 cmake-build-debug
+build/
 
 # IDEs
 .idea
@@ -40,3 +41,6 @@ cmake-build-debug
 
 # Naina stuff
 HelloWorld.dSYM
+
+# WILLIAM BRITO STUFF
+BFS.code-workspace
