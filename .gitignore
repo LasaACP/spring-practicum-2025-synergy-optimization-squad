@@ -34,5 +34,9 @@
 # Cmake
 cmake-build-debug
 
-# Clion
+# IDEs
 .idea
+.vscode
+
+# Naina stuff
+HelloWorld.dSYM
