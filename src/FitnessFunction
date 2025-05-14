@@ -1,0 +1,56 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+const int NUM_COURSES= 8;
+const int NUM_PREFRENCES= 3;
+const int NUM_CORE_CLASSES= 3;
+
+// I assumed our student struct had id, grade, assigned courses, and preferences. I also assumed that grade would be 0,1,2,3 for the 4 years. This is cause the FF takes in a double array of all the schools core classes. Each index is a grade level.
+
+bool contains(string courses[], const string& target)
+{
+  for(int i=0; i<NUM_COURSES; i++)
+    {
+      if(courses[i] == target)
+        {
+          return true;
+        }
+    }
+  return false;
+}
+
+int fitnessFunction(Period periods[], int numStudents)
+{
+  int fitnessScore= 0;
+  Period courseList= periods[0];
+  int courseLength= sizeof(courseList) /sizeof(courseList[0]);
+  
+  
+  for(int i=0; i<numStudents; i++)
+    {
+      Student student = students[i];
+      int grade= student.grade;
+      
+      for(int i=0; i<NUM_CORE_CLASSES; i++)
+        {
+          string core= coreClasses[grade][i];
+          if(!contains(student.courses, core))
+            {
+              fitnessScore-=100*NUM_PREFRENCES;
+            }
+        }
+
+      for(int i=0; i<NUM_PREFRENCES; i++)
+        {
+          string pref= student.preferences[i];
+          if(contains(student.courses, pref))
+            {
+              fitnessScore+= 20*NUM_PREFRENCES - (i*10);
+           }
+        }
+    }
+  
+  return fitnessScore;
+}
