@@ -59,4 +59,19 @@ public:
 
     /** Adds a student to a given class. */
     void add_student_to_class(int period, const string &course_name, const string &student_id);
+
+    /** Inserts all student IDs into `student_list`. */
+    void get_all_students(vector<string> &student_list);
+
+    /** Returns the number of core classes that a student is enrolled in. */
+    int get_number_of_student_cores(const string &student_id);
+
+    /** Inserts all the student's prioritized wishes into `wishlist`. */
+    void get_student_wishlist(const string &student_id, vector<string> &wishlist);
+
+    /** Returns true if the student is in a given course and period (class). */
+    bool is_student_in_class(int period, const string &course_name, const string &student_id);
+
+    /** Returns true if the student is in any of the periods for a given course. */
+    bool is_student_in_course(const string &course_name, const string &student_id);
 };
