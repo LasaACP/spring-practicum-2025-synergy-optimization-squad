@@ -1,6 +1,6 @@
+#include "schedule.h"
 #include <algorithm>
 #include <stdexcept>
-#include "schedule.h"
 
 using namespace std;
 
@@ -47,7 +47,7 @@ void Schedule::add_student_to_class(const int period, const string& course_name,
     student->schedule[period] = course;
 }
 
-void Schedule::get_all_students(vector<string>& student_list) {
+void Schedule::get_all_students(LinkedList<string>& student_list) {
     for (const auto &[fst, snd] : students) {
         student_list.push_back(fst);
     }
@@ -64,15 +64,15 @@ int Schedule::get_number_of_student_cores(const string& student_id) {
     return core_count;
 }
 
-void Schedule::get_student_wishlist(const string &student_id, vector<string>& wishlist) {
+void Schedule::get_student_wishlist(const string &student_id, LinkedList<string>& wishlist) {
     auto new_wishes = students[student_id]->wish_list;
-    wishlist.insert(wishlist.end(), new_wishes.begin(), new_wishes.end());
+    wishlist.insert(new_wishes);
 }
 
 bool Schedule::is_student_in_class(const int period, const string& course_name, const string& student_id) {
     auto students_in_course = periods[period]->classes[course_name]->students;
     const auto student = students[student_id];
-    return ranges::find(students_in_course, student) != students_in_course.end();
+    return students_in_course.contains(student);
 }
 
 bool Schedule::is_student_in_course(const string& course_name, const string& student_id) {

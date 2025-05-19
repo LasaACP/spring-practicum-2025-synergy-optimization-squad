@@ -2,7 +2,7 @@
 
 #include <string>
 #include <unordered_map>
-#include <vector>
+#include "linkedlist.h"
 
 constexpr int NUM_PERIODS = 8;
 
@@ -23,14 +23,14 @@ class Schedule {
         string name;
 
         Period* period; // The period this class is held
-        vector<Student*> students; // A list of students in this classes
+        LinkedList<Student*> students; // A list of students in this classes
         bool is_core; // Whether this class represents a core course
     };
 
     /** Represents an individual student. There is a one-to-one relationship between a student and an instance of Student. */
     struct Student {
         string student_id; // Student identifier or unique name
-        vector<string> wish_list; // A list of names of the student's requested courses, with element 0 being the most requested
+        LinkedList<string> wish_list; // A list of names of the student's requested courses, with element 0 being the most requested
         Class* schedule[NUM_PERIODS]; // The student's schedule
     };
 
@@ -61,13 +61,13 @@ public:
     void add_student_to_class(int period, const string &course_name, const string &student_id);
 
     /** Inserts all student IDs into `student_list`. */
-    void get_all_students(vector<string> &student_list);
+    void get_all_students(LinkedList<string> &student_list);
 
     /** Returns the number of core classes that a student is enrolled in. */
     int get_number_of_student_cores(const string &student_id);
 
     /** Inserts all the student's prioritized wishes into `wishlist`. */
-    void get_student_wishlist(const string &student_id, vector<string> &wishlist);
+    void get_student_wishlist(const string &student_id, LinkedList<string> &wishlist);
 
     /** Returns true if the student is in a given course and period (class). */
     bool is_student_in_class(int period, const string &course_name, const string &student_id);
