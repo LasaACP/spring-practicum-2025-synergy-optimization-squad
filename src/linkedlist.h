@@ -1,6 +1,8 @@
 #pragma once
 
+#include <cassert>
 #include <cstddef>
+#include <stdexcept>
 
 template <typename T>
 class LinkedList {
@@ -8,7 +10,7 @@ public:
     typedef size_t SizeType;
 private:
     struct Element {
-        T* value;
+        const void* value;
         Element* previous;
         Element* next;
     };
@@ -20,23 +22,93 @@ public:
     class LinkedListIterator {
         Element* current;
     public:
-        explicit LinkedListIterator(LinkedList* list);
+        explicit LinkedListIterator(LinkedList* list) {
+            current = list->head;
+        }
+
         ~LinkedListIterator() = default;
 
-        T& get();
-        bool finished();
-        void next();
+        T& get() {
+            if (finished()) {
+                throw std::out_of_range("Reached end of linked list.");
+            }
+            return *reinterpret_cast<const T*>(current->value);
+        }
+
+        bool finished() {
+            return current == nullptr;
+        }
+
+        void next() {
+            current = current->next;
+        }
     };
     friend LinkedListIterator;
 
-    LinkedList();
-    ~LinkedList();
+    LinkedList() {
+        head = nullptr;
+        tail = nullptr;
+        _size = 0;
+    }
 
-    void push_back(const T &item);
-    LinkedListIterator begin();
-    [[nodiscard]] SizeType size() const;
-    void insert(LinkedList& list);
-    bool contains(const T& item);
-    [[nodiscard]] bool empty() const;
-    T& at(SizeType idx);
+    ~LinkedList() {
+        for (auto item = head; item != nullptr;) {
+            auto next_item = item->next;
+            delete item;
+            item = next_item;
+        }
+    }
+
+    void push_back(const T &item) {
+        auto node = new Element{.value = reinterpret_cast<const void*>(&item), .previous = tail, .next = nullptr};
+
+        // Update previous item's next pointer to point to the new node
+        if (node->previous != nullptr) node->previous->next = node;
+
+        // Update the head and tail
+        if (head == nullptr) head = node;
+        tail = node;
+
+        // Increment the linked list's size
+        ++_size;
+    }
+
+    LinkedListIterator begin() {
+        return LinkedListIterator(this);
+    }
+
+    [[nodiscard]] SizeType size() const {
+        return _size;
+    }
+
+    void insert(LinkedList& list) {
+        for (auto i = list.begin(); !i.finished(); i.next()) {
+            push_back(i.get());
+        }
+    }
+
+    bool contains(const T& item) {
+        for (auto i = begin(); !i.finished(); i.next()) {
+            if (i.get() == item) return true;
+        }
+        return false;
+    }
+
+    [[nodiscard]] bool empty() const {
+        return _size == 0;
+    }
+
+    T& at(const SizeType idx) {
+        if (idx > _size - 1) {
+            throw std::out_of_range("Index out of range for linked list.");
+        }
+
+        int i = 0;
+        for (auto val = begin(); !val.finished(); val.next()) {
+            if (i == idx) return val.get();
+            ++i;
+        }
+
+        assert(false);
+    }
 };
