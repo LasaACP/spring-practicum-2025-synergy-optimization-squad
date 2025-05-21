@@ -13,6 +13,7 @@ add_executable(SynergyScheduler
         src/mutation.cpp src/mutation.h
         src/genetic.cpp src/genetic.h
         src/fitness.cpp src/fitness.h
-        src/linkedlist.h)
+        src/linkedlist.h
+        src/hashmap.h)
 
 add_executable(SyntheticData src/jsongen.cpp)
