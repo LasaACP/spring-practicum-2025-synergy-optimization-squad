@@ -53,6 +53,12 @@ void Schedule::get_all_students(vector<string>& student_list) {
     }
 }
 
+void Schedule::get_all_courses(vector<string>& course_list) {//not sure what fst stands for
+    for(const auto &[fst, snd]: classes) {//I basically assumed i could do the same thing as the get students function
+        course_list.push_back(fst);
+    }
+}
+
 int Schedule::get_number_of_student_cores(const string& student_id) {
     const auto student = students[student_id];
 

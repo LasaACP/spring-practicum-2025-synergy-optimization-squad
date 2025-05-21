@@ -27,17 +27,38 @@ vector<Schedule> Mutation(vector<Schedule> genome) //mutates schedules
     vector<Schedule> mut_sch;// vector I will return that contains all the mutated schedules
     vector<string> students;
     int pop = genome.size();//number of schedules
-    double rand = 0;
-    uniform_int_distribution<int> uid(0,7);//7 or however many periods we have - 1
+    uniform_int_distribution<int> uid(0,1000);//assuming that there are less than 1001 periods...
     default_random_engine dre;
     for(Schedule s: genome)
     {
         s.get_all_students(students);
-        for(string str: students)
+        Schedule ns; // ns for new schedule
+        vector<string> course_list; 
+        ns.get_all_courses(course_list);
+        for(string str: students)//for each student ID in the schedule
         {
+            int rand = uid(dre);
+            string tcourse = course_list[rand % course_list.size()]; // gives me a random course
+            vector<string> wishes;//temporary variable to transfer student wishlist
+            s.get_student_wishlist(str, wishes);
+            ns.add_student(str); //adds the student to the new schedule
+            for(string w: wishes)
+            {
+                ns.add_student_wish(str, w);//adds all items from the student's wishlist
+            }
+            for(int i = 0; i < NUM_PERIODS; i++)//now I need to add the classes
+            {
+                if(!i == rand % 8)//period is not the one I selected randomly to change
+                {
+                    ns.add_student_to_class(i, , str);
+                }
+                else//else I make the random change
+                {
 
+                }
+            }
         }
-        mut_sch.push_back(s);
+        mut_sch.push_back(ns);//adds mutated schedule to my new genome
     }
     return mut_sch;
 }

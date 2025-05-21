@@ -43,6 +43,7 @@ class Schedule {
     Period *periods[NUM_PERIODS];
     // A mapping of students by ID for easy access
     unordered_map<string, Student*> students;
+    unordered_map<string, Class*> classes;
 
 public:
     Schedule();
@@ -62,6 +63,9 @@ public:
 
     /** Inserts all student IDs into `student_list`. */
     void get_all_students(vector<string> &student_list);
+
+    /** Inserts all courses into course_list */
+    void get_all_courses(vector<string> &course_list);
 
     /** Returns the number of core classes that a student is enrolled in. */
     int get_number_of_student_cores(const string &student_id);
