@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include "linkedlist.h"
+#include "hashmap.h"
 
 constexpr int NUM_PERIODS = 8;
 
@@ -36,13 +37,13 @@ class Schedule {
 
     /** Represents a period (time of day when classes are held). */
     struct Period {
-        unordered_map<string, Class*> classes; // All classes that occur in the current period.
+        StringHashMap<Class*> classes; // All classes that occur in the current period.
     };
 
     // A list of all periods representing a "master" schedule
     Period *periods[NUM_PERIODS];
     // A mapping of students by ID for easy access
-    unordered_map<string, Student*> students;
+    StringHashMap<Student*> students;
 
 public:
     Schedule();

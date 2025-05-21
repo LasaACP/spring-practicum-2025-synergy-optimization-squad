@@ -30,6 +30,10 @@ public:
     StringHashMap() = default;
     ~StringHashMap() {
         for (auto & bucket : buckets) {
+            for (auto i = bucket.begin(); !i.finished(); i.next()) {
+                delete i.get()->value;
+                delete i.get();
+            }
         }
     }
 
