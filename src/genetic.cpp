@@ -1,7 +1,11 @@
 #include "schedule.h"
 #include "json/json.h"
 
+<<<<<<< Updated upstream
 void generate_schedule(Json::Value& root, Schedule& schedule) {
+=======
+void generate_schedule(Json::Value& root, Schedule schedule) {
+>>>>>>> Stashed changes
     int periodNumber = 0;
     //Put all the classes into the schedule
     for (const auto& core : root["cores"]) {
