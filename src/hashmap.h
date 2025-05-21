@@ -39,7 +39,7 @@ public:
 
     [[nodiscard]] static SizeType hash(const std::string& s) {
         SizeType total = 0;
-        for (auto c : s) ++total;
+        for (const auto c : s) total += c;
         return total % BUCKET_COUNT;
     }
 
