@@ -4,13 +4,14 @@
 #include <cstddef>
 #include <stdexcept>
 
+
 template <typename T>
 class LinkedList {
 public:
     typedef size_t SizeType;
 private:
     struct Element {
-        const void* value;
+        T* value;
         Element* previous;
         Element* next;
     };
@@ -32,7 +33,7 @@ public:
             if (finished()) {
                 throw std::out_of_range("Reached end of linked list.");
             }
-            return *reinterpret_cast<const T*>(current->value);
+            return *(current->value);
         }
 
         bool finished() {
@@ -54,23 +55,18 @@ public:
     ~LinkedList() {
         for (auto item = head; item != nullptr;) {
             auto next_item = item->next;
+            delete item->value;
             delete item;
             item = next_item;
         }
     }
 
-    void push_back(const T &item) {
-        auto node = new Element{.value = reinterpret_cast<const void*>(&item), .previous = tail, .next = nullptr};
+    void push_back(const T& item) {
+        _push_back(new T(item));
+    }
 
-        // Update previous item's next pointer to point to the new node
-        if (node->previous != nullptr) node->previous->next = node;
-
-        // Update the head and tail
-        if (head == nullptr) head = node;
-        tail = node;
-
-        // Increment the linked list's size
-        ++_size;
+    void push_back(T&& item) {
+        _push_back(new T(std::move(item)));
     }
 
     LinkedListIterator begin() {
@@ -110,5 +106,20 @@ public:
         }
 
         assert(false);
+    }
+
+private:
+    void _push_back(T* item) {
+        auto node = new Element{.value = item, .previous = tail, .next = nullptr};
+
+        // Update previous item's next pointer to point to the new node
+        if (node->previous != nullptr) node->previous->next = node;
+
+        // Update the head and tail
+        if (head == nullptr) head = node;
+        tail = node;
+
+        // Increment the linked list's size
+        ++_size;
     }
 };

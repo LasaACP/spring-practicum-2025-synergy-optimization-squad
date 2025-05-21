@@ -48,7 +48,7 @@ void Schedule::add_student_to_class(const int period, const string& course_name,
 }
 
 void Schedule::get_all_students(LinkedList<string>& student_list) {
-    for (const auto &[fst, snd] : students) {
+    for (auto &[fst, snd] : students) {
         student_list.push_back(fst);
     }
 }
