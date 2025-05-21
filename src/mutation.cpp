@@ -50,7 +50,7 @@ vector<Schedule> Mutation(vector<Schedule> genome) //mutates schedules
             {
                 if(!i == rand % 8)//period is not the one I selected randomly to change
                 {
-                    ns.add_student_to_class(i, , str);
+                    //ns.add_student_to_class(i, , str);
                 }
                 else//else I make the random change
                 {
