@@ -1,20 +1,21 @@
 #include "mutation.h"
-vector<double> prob_helper(vector<Schedule> genome)
+LinkedList<double> prob_helper(LinkedList<Schedule> genome)
 {
-    vector<double> probs;
-    vector<int> costs;
+    LinkedList<double> probs;
+    LinkedList<int> costs;
     double total = 0;
     double c = 0;
 
-    for(Schedule s: genome)
+    for(auto s = genome.begin(); !s.finished(); s.next())
     {
-        c = calculate_fitness(s);
+        c = calculate_fitness(s.get());
         costs.push_back(c);
         total += c;
     }
-    for(int i: costs)
+
+    for(auto i = costs.begin(); !i.finished(); i.next())
     {
-        probs.push_back((double)i/total);//returns percent of total cost value.
+        probs.push_back((double)i.get()/total);//returns percent of total cost value.
     }
     return probs;
 
@@ -22,53 +23,53 @@ vector<double> prob_helper(vector<Schedule> genome)
 /*alters individual students classes by replacing classes they are in with random classes 
 they are not in. For core classes I will simply swap the core class' location in the 
 schedule*/
-vector<Schedule> Mutation(vector<Schedule> genome) //mutates schedules
+LinkedList<Schedule> Mutation(LinkedList<Schedule> genome) //mutates schedules
 {
-    vector<Schedule> mut_sch;// vector I will return that contains all the mutated schedules
-    vector<string> students;
+    LinkedList<Schedule> mut_sch;// vector I will return that contains all the mutated schedules
+    LinkedList<string> students;
     int pop = genome.size();//number of schedules
     double rand = 0;
     uniform_int_distribution<int> uid(0,7);//7 or however many periods we have - 1
     default_random_engine dre;
-    for(Schedule s: genome)
+    for(auto s = genome.begin(); !s.finished(); s.next())
     {
-        s.get_all_students(students);
-        for(string str: students)
+        s.get().get_all_students(students);
+        for(auto str = students.begin(); !s.finished(); s.next())
         {
 
         }
-        mut_sch.push_back(s);
+        mut_sch.push_back(s.get());
     }
     return mut_sch;
 }
 /*makes a new list of schedules by combing students from the genome based on the relative fitness of those genomes*/
-vector<Schedule> genetic_crossover(vector<Schedule> genome)// this could potentially be moved to genetic.cpp
+LinkedList<Schedule> genetic_crossover(LinkedList<Schedule> genome)// this could potentially be moved to genetic.cpp
 {
-    vector<double> probs = prob_helper(genome);
-    vector<Schedule> offspring;// vector I will return that contains all the mutated schedules
+    LinkedList<double> probs = prob_helper(genome);
+    LinkedList<Schedule> offspring;// vector I will return that contains all the mutated schedules
     int pop = genome.size();//number of schedules
     double sum = 0;
     int index = 0;
     uniform_real_distribution<double> urd(0,1);//distribution of real numbers from 0-1 
     default_random_engine dre;//this is how I am selecting a random number from urd
-    vector<string> students;
+    LinkedList<string> students;
     if(genome.empty())
     {
         return offspring;
     }
-    genome[0].get_all_students(students);// the idea is that when I am making my new schedule I just add entire students
+    genome.at(0).get_all_students(students);// the idea is that when I am making my new schedule I just add entire students
     for(int i = 0; i < pop; i++)
     {
         Schedule temp_schedule;
         //still need to have a way to combine schedules such that the balance of # of students per class is maintained.
-        for(const string& s: students)
+        for(auto s = students.begin(); !s.finished(); s.next())
         {
             double rand = urd(dre);//generates a random number
-            for(double d: probs)
+            for(auto d = probs.begin(); !d.finished(); d.next())
             {
                 if(rand > sum)
                 {
-                    sum += d;
+                    sum += d.get();
                     index++;
                 }
                 else
